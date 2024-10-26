@@ -1,0 +1,21 @@
+{
+  "name": "api-ts",
+  "version": "1.0.0",
+  "description": "API + Typescript",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node watch src/index.js"
+  },
+  "keywords": [
+    "Typescript",
+    "Server",
+    "Express",
+    "NodeJS",
+    "Prisma ORM",
+    "Javascript",
+    "API Restful"
+  ],
+  "author": "Sebastian Galeano",
+  "license": "ISC"
+}
