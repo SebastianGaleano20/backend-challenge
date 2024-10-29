@@ -1,4 +1,5 @@
 import HTTP_STATUS from "../helpers/httpStatus";
+
 const ERROR_HANDLERS = {
     sqlError: (response, error) => {
       response.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
