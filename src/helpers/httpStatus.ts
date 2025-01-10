@@ -1,4 +1,6 @@
-const HTTP_STATUS = {
+import type { HttpStatus } from '../types/helpers/index'
+
+const httpStatus: HttpStatus = {
     OK: 200,
     CREATED: 201,
     BAD_REQUEST: 400,
@@ -8,4 +10,4 @@ const HTTP_STATUS = {
     INTERNAL_SERVER_ERROR: 500
 };
 
-export default HTTP_STATUS;
+export default httpStatus;
