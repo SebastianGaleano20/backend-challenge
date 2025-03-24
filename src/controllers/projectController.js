@@ -21,9 +21,34 @@ const projectController = () => {
             await prisma.$disconnect();
         }
     }
+    
+    const createProject = async (req,res, next) => {
+        const {name,description,status} = req.body;
 
+        try {
+        const project = await prisma.project.create({
+            data: {
+                name,
+                description,
+                status,
+            }
+        });
+        const responseFormat = {
+            data: project,
+            message: 'Project created successfully',
+            status: HTTP_STATUS.CREATED,
+        }
+        return res.status(HTTP_STATUS.CREATED).json(responseFormat);
+
+        } catch (error) {
+            next(error);
+        } finally{
+            await prisma.$disconnect();
+        }
+    }
     return {
         getProjects,
+        createProject
     }
 }
 
