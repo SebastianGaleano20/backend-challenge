@@ -5,8 +5,8 @@ import PrismaClient from '../config/prisma.js';
 const prisma = new PrismaClient();
 
 
-const projectController = () => { 
-    const getProjects = async (req,res, next) => {
+const projectController = () => {
+    const getProjects = async (req, res, next) => {
         try {
             const projects = await prisma.project.findMany();
             const responseFormat = {
@@ -17,38 +17,67 @@ const projectController = () => {
             return res.status(HTTP_STATUS.OK).json(responseFormat);
         } catch (error) {
             next(error);
-        } finally{
+        } finally {
             await prisma.$disconnect();
         }
     }
-    
-    const createProject = async (req,res, next) => {
-        const {name,description,status} = req.body;
+
+    const createProject = async (req, res, next) => {
+        const { name, description, status } = req.body;
 
         try {
-        const project = await prisma.project.create({
-            data: {
-                name,
-                description,
-                status,
+            const project = await prisma.project.create({
+                data: {
+                    name,
+                    description,
+                    status,
+                }
+            });
+            const responseFormat = {
+                data: project,
+                message: 'Project created successfully',
+                status: HTTP_STATUS.CREATED,
             }
-        });
-        const responseFormat = {
-            data: project,
-            message: 'Project created successfully',
-            status: HTTP_STATUS.CREATED,
-        }
-        return res.status(HTTP_STATUS.CREATED).json(responseFormat);
+            return res.status(HTTP_STATUS.CREATED).json(responseFormat);
 
         } catch (error) {
             next(error);
-        } finally{
+        } finally {
+            await prisma.$disconnect();
+        }
+    }
+
+    const updateProject = async (req, res, next) => {
+        const { name, description, status } = req.body;
+        const { id } = req.params;
+
+        try {
+            const project = await prisma.project.update({
+                where: {
+                    id,
+                },
+                data: {
+                    name,
+                    description,
+                    status,
+                }
+            });
+            const responseFormat = {
+                data: project,
+                message: 'Project updated successfully',
+                status: HTTP_STATUS.OK,
+            }
+            return res.status(HTTP_STATUS.OK).json(responseFormat);
+        } catch (error) {
+            next(error)
+        } finally {
             await prisma.$disconnect();
         }
     }
     return {
         getProjects,
-        createProject
+        createProject,
+        updateProject
     }
 }
 
