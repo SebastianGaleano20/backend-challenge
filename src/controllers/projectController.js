@@ -1,6 +1,5 @@
 import HTTP_STATUS from '../helpers/httpStatus.js';
-import { createProjectSchema, updateProjectSchema } from '../schemas/usersSchema.js';
-import PrismaClient from '../config/prisma.js';
+import PrismaClient from '@prisma/client'
 
 const prisma = new PrismaClient();
 
