@@ -10,26 +10,30 @@ export const projectController = () => {
     res: Response,
     next: NextFunction
   ) => {
-    const { name, description, status } = req.body;
+    const { name, description, status, developers } = req.body;
     try {
       const project = await prisma.project.create({
         data: {
           name,
           description,
           status,
+          developers: developers && {
+            create: developers.map((dev: { devId: number }) => ({
+              devId: dev.devId,
+            })),
+          },
         },
       });
 
-      const responseFormat = {
-        data: project,
-        message: "Project Created Succesfully",
-      };
-
-      return res.status(httpStatus.OK).json(responseFormat);
+      return res
+        .status(httpStatus.CREATED)
+        .json({ data: project, message: "Project created successfully" });
     } catch (error) {
       next(error);
-    } finally {
-      await prisma.$disconnect();
     }
+  };
+
+  return {
+    createProject,
   };
 };
