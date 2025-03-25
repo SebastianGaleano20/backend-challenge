@@ -7,36 +7,44 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model ProjectManagers {
-  id        Int       @id @default(autoincrement())
-  name      String    @unique
-  email     String    @unique
-  password  String
-  createdAt DateTime  @default(now())
-  updateAt  DateTime  @default(now())
-  Projects  Projects?
-}
-
-model Projects {
-  id               Int             @id @default(autoincrement())
+model Project {
+  id               Int                @id @default(autoincrement())
   name             String
-  description      String
-  createdAt        DateTime        @default(now())
-  updateAt         DateTime        @default(now())
-  status           Boolean
-  projectManagerId Int             @unique
-  projectManager   ProjectManagers @relation(fields: [projectManagerId], references: [id])
-  developerId      Int             @unique
-  developer        Developers      @relation(fields: [developerId], references: [id])
+  description      String?
+  createdAt        DateTime           @default(now())
+  updateAt         DateTime           @default(now())
+  status           ProjectStatus      @default(IN_PROGRESS)
+  ProjectDeveloper ProjectDeveloper[]
 }
 
-model Developers {
+model Developer {
+  id               Int                @id @default(autoincrement())
+  name             String             @unique
+  email            String             @unique
+  image            String?
+  createdAt        DateTime           @default(now())
+  updateAt         DateTime           @default(now())
+  ProjectDeveloper ProjectDeveloper[]
+  role             DevRole            @default(DEVELOPER)
+}
+
+model ProjectDeveloper {
   id        Int       @id @default(autoincrement())
-  name      String    @unique
-  email     String    @unique
-  password  String
-  image     String?
-  createdAt DateTime  @default(now())
-  updateAt  DateTime  @default(now())
-  Projects  Projects?
+  devId     Int
+  projectId Int
+  developer Developer @relation(fields: [devId], references: [id])
+  project   Project   @relation(fields: [projectId], references: [id])
+
+  @@unique([devId, projectId])
+}
+
+enum ProjectStatus {
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum DevRole {
+  MANAGER
+  DEVELOPER
 }

@@ -5,7 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "node watch src/index.js"
+    "dev": "node watch src/index.js",
+    "build": "tsc",
+    "generate": "prisma generate"
   },
   "keywords": [
     "Typescript",
