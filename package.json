@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@prisma/client": "6.5.0",
+    "@types/express": "^5.0.1",
     "express": "^4.21.2",
     "joi": "^17.13.3"
   }

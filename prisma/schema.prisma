@@ -8,24 +8,24 @@ datasource db {
 }
 
 model Project {
-  id               Int                @id @default(autoincrement())
-  name             String
-  description      String?
-  createdAt        DateTime           @default(now())
-  updateAt         DateTime           @default(now())
-  status           ProjectStatus      @default(IN_PROGRESS)
-  ProjectDeveloper ProjectDeveloper[]
+  id          Int                @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime           @default(now())
+  updateAt    DateTime           @default(now())
+  status      ProjectStatus      @default(IN_PROGRESS)
+  developers  ProjectDeveloper[]
 }
 
 model Developer {
-  id               Int                @id @default(autoincrement())
-  name             String             @unique
-  email            String             @unique
-  image            String?
-  createdAt        DateTime           @default(now())
-  updateAt         DateTime           @default(now())
-  ProjectDeveloper ProjectDeveloper[]
-  role             DevRole            @default(DEVELOPER)
+  id        Int                @id @default(autoincrement())
+  name      String             @unique
+  email     String             @unique
+  image     String?
+  createdAt DateTime           @default(now())
+  updateAt  DateTime           @default(now())
+  projects  ProjectDeveloper[]
+  role      DevRole            @default(DEVELOPER)
 }
 
 model ProjectDeveloper {
