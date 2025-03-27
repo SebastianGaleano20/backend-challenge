@@ -1,14 +1,18 @@
 import { Router } from "express";
 import { projectController } from "../controllers/projectController";
-import swaggerUi from "swagger-ui-express";
-import swaggerJsdoc from "swagger-jsdoc";
 
 export const projectRouter = () => {
     const projectRouter = Router();
-    const { getAllProject, getProjectById, createProject, deleteProject } = projectController();
+    const { getAllProject, getProjectById, createProject, deleteProject, updateProject } = projectController();
 
     projectRouter.route('/projects')
-    .get(getAllProject)
-    .post(createProject)
-    
+        .get(getAllProject)
+        .post(createProject)
+
+    projectRouter.route('/projects/:id')
+        .get(getProjectById)
+        .delete(deleteProject)
+        .patch(updateProject)
+
+    return projectRouter;
 }
