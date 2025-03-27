@@ -78,8 +78,41 @@ export const projectController = () => {
     }
   }
 
+  const getProjectById = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    // Destructuramos el id del proyecto
+    const { id } = req.params;
+    try {
+      const project = await prisma.project.findUnique({
+        where: {
+          id: Number(id),
+        },
+        include: {
+          developers: true, // Incluimos los datos de desarrolladores
+        },
+      });
+
+      // Formato de respuesta para el cliente
+      const responseFormat = {
+        data: project,
+        message: "Project retrieved successfully",
+        status: httpStatus.OK
+      };
+
+      return res.status(httpStatus.OK).json(responseFormat)
+    } catch (error) {
+      next(error)
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
+
   return {
     createProject,
     getAllProject,
+    getProjectById,
   };
 };
