@@ -24,10 +24,15 @@ export const projectController = () => {
           },
         },
       });
+      const responseFormat = {
+        data: project,
+        message: "Project created successfully",
+        status: httpStatus.CREATED
+      };
 
       return res
         .status(httpStatus.CREATED)
-        .json({ data: project, message: "Project created successfully" });
+        .json(responseFormat);
     } catch (error) {
       next(error);
     }
