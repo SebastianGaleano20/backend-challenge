@@ -33,9 +33,7 @@ export const projectController = () => {
         status: httpStatus.CREATED
       };
 
-      return res
-        .status(httpStatus.CREATED)
-        .json(responseFormat);
+      return res.status(httpStatus.CREATED).json(responseFormat);
     } catch (error) {
       next(error);
     } finally {
@@ -70,9 +68,9 @@ export const projectController = () => {
         status: httpStatus.OK
       };
 
-      return res.status(httpStatus.OK).json(responseFormat)
+      return res.status(httpStatus.OK).json(responseFormat);
     } catch (error) {
-      next(error)
+      next(error);
     } finally {
       await prisma.$disconnect();
     }
@@ -104,7 +102,34 @@ export const projectController = () => {
 
       return res.status(httpStatus.OK).json(responseFormat)
     } catch (error) {
-      next(error)
+      next(error);
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
+
+  const deleteProject = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { id } = req.params;
+    try {
+      const project = await prisma.project.delete({
+        where: {
+          id: Number(id),
+        },
+      });
+
+      const responseFormat = {
+        data: project,
+        message: "Project deleted successfully",
+        status: httpStatus.OK
+      };
+
+      return res.status(httpStatus.OK).json(responseFormat);
+    } catch (error) {
+      next(error);
     } finally {
       await prisma.$disconnect();
     }
@@ -114,5 +139,6 @@ export const projectController = () => {
     createProject,
     getAllProject,
     getProjectById,
+    deleteProject
   };
 };
