@@ -20,7 +20,7 @@ El usuario accede a un administrador de proyectos para realizar la gestión, pue
 
 El objetivo es realizar la construcción de endpoint clase Projects que represente la información del proyecto como muestra el diseño.
 
-- Realizar el schema de base de datos de proyectos(MySQL).
+- Realizar el schema de base de datos de proyectos(MySQL).✅
 - El endpoint debe traer un listado de proyectos con paginado.
 - Traer un solo proyecto /id.
 - Realizar un POST para insertar o editar un proyecto.
