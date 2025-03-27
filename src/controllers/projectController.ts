@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { Response, Request, NextFunction } from "express";
 import httpStatus from "../helpers/httpStatus";
+import { formatResponse } from "../utils/formatResponse";
 
 const prisma = new PrismaClient();
 
@@ -26,14 +27,8 @@ export const projectController = () => {
           },
         },
       });
-      // Formato de respuesta para el cliente
-      const responseFormat = {
-        data: project,
-        message: "Project created successfully",
-        status: httpStatus.CREATED
-      };
 
-      return res.status(httpStatus.CREATED).json(responseFormat);
+      return res.status(httpStatus.CREATED).json(formatResponse(project, "Project created successfully", httpStatus.CREATED));
     } catch (error) {
       next(error);
     } finally {
@@ -61,14 +56,7 @@ export const projectController = () => {
         },
       });
 
-      // Formato de respuesta para el cliente
-      const responseFormat = {
-        data: projects,
-        message: "Projects retrieved successfully",
-        status: httpStatus.OK
-      };
-
-      return res.status(httpStatus.OK).json(responseFormat);
+      return res.status(httpStatus.OK).json(formatResponse(projects, "Projects retrieved successfully"));
     } catch (error) {
       next(error);
     } finally {
@@ -93,14 +81,7 @@ export const projectController = () => {
         },
       });
 
-      // Formato de respuesta para el cliente
-      const responseFormat = {
-        data: project,
-        message: "Project retrieved successfully",
-        status: httpStatus.OK
-      };
-
-      return res.status(httpStatus.OK).json(responseFormat)
+      return res.status(httpStatus.OK).json(formatResponse(project, "Project retrieved successfully"))
     } catch (error) {
       next(error);
     } finally {
@@ -121,13 +102,7 @@ export const projectController = () => {
         },
       });
 
-      const responseFormat = {
-        data: project,
-        message: "Project deleted successfully",
-        status: httpStatus.OK
-      };
-
-      return res.status(httpStatus.OK).json(responseFormat);
+      return res.status(httpStatus.OK).json(formatResponse(project, "Project deleted successfully"));
     } catch (error) {
       next(error);
     } finally {
