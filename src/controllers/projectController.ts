@@ -10,8 +10,10 @@ export const projectController = () => {
     res: Response,
     next: NextFunction
   ) => {
+    //Destructuramos los datos que vienen en el body
     const { name, description, status, developers } = req.body;
     try {
+      // Creamos el proyecto
       const project = await prisma.project.create({
         data: {
           name,
@@ -24,6 +26,7 @@ export const projectController = () => {
           },
         },
       });
+      // Formato de respuesta para el cliente
       const responseFormat = {
         data: project,
         message: "Project created successfully",
@@ -45,8 +48,10 @@ export const projectController = () => {
     res: Response,
     next: NextFunction
   ) => {
+    // Destructuramos query para obtener el nombre del proyecto
     const { query } = req;
     try {
+      // Buscamos el proyecto por nombre o devolvemos todos sus valores
       const projects = await prisma.project.findMany({
         where: {
           name: {
@@ -54,9 +59,18 @@ export const projectController = () => {
           },
         },
         include: {
-          developers: true,
+          developers: true, // Incluimos los datos de desarrolladores
         },
       });
+
+      // Formato de respuesta para el cliente
+      const responseFormat = {
+        data: projects,
+        message: "Projects retrieved successfully",
+        status: httpStatus.OK
+      };
+
+      return res.status(httpStatus.OK).json(responseFormat)
     } catch (error) {
       next(error)
     } finally {
