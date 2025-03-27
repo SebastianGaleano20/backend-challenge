@@ -10,7 +10,7 @@ export const projectController = () => {
     req: Request,
     res: Response,
     next: NextFunction
-  ) => {
+  ): Promise<void> => {
     //Destructuramos los datos que vienen en el body
     const { name, description, status, developers } = req.body;
     try {

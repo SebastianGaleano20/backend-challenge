@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { projectController } from "../controllers/projectController";
+import { schemaValidator } from "../middlewares/schemaValidator";
+import { projectSchema } from "../schemas/projectsSchema";
 
 export const projectRouter = () => {
     const projectRouter = Router();
@@ -7,7 +9,7 @@ export const projectRouter = () => {
 
     projectRouter.route('/projects')
         .get(getAllProject)
-        .post(createProject)
+        .post(schemaValidator(projectSchema), createProject)
 
     projectRouter.route('/projects/:id')
         .get(getProjectById)
