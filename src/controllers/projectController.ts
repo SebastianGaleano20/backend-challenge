@@ -35,10 +35,37 @@ export const projectController = () => {
         .json(responseFormat);
     } catch (error) {
       next(error);
+    } finally {
+      await prisma.$disconnect();
     }
   };
 
+  const getAllProject = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { query } = req;
+    try {
+      const projects = await prisma.project.findMany({
+        where: {
+          name: {
+            contains: query.name,
+          },
+        },
+        include: {
+          developers: true,
+        },
+      });
+    } catch (error) {
+      next(error)
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
+
   return {
     createProject,
+    getAllProject,
   };
 };
