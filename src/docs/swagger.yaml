@@ -62,3 +62,99 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Project'
+  /projects/{id}:
+    get:
+      summary: Get project by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+    delete:
+      summary: Delete a project
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Project deleted successfully
+    patch:
+      summary: Update a project
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectInput'
+      responses:
+        200:
+          description: Project updated successfully
+components:
+  schemas:
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum: [IN_PROGRESS, COMPLETED, CANCELED]
+        developers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Developer'
+    ProjectInput:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 3
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+        status:
+          type: string
+          enum: [IN_PROGRESS, COMPLETED, CANCELED]
+        developers:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeveloperInput'
+    Developer:
+      type: object
+      properties:
+        devId:
+          type: integer
+        role:
+          type: string
+          enum: [MANAGER, DEVELOPER]
+    DeveloperInput:
+      type: object
+      properties:
+        devId:
+          type: integer
+          required: true
+        role:
+          type: string
+          enum: [MANAGER, DEVELOPER]
