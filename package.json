@@ -1,5 +1,5 @@
 {
-  "name": "backend-challenge",
+  "name": "project-management-api",
   "version": "1.0.0",
   "description": "API RESTFUL para Challenge",
   "main": "app.js",
