@@ -28,7 +28,9 @@ export const projectController = () => {
         },
       });
 
-      res.status(httpStatus.CREATED).json(formatResponse(project, "Project created successfully"));
+      res
+        .status(httpStatus.CREATED)
+        .json(formatResponse(project, "Project created successfully"));
     } catch (error) {
       next(error);
     } finally {
@@ -41,28 +43,22 @@ export const projectController = () => {
     res: Response,
     next: NextFunction
   ) => {
-    // Destructuramos query para obtener el nombre del proyecto
-    const { query } = req;
     try {
-      // Buscamos el proyecto por nombre o devolvemos todos sus valores
       const projects = await prisma.project.findMany({
-        where: {
-          name: {
-            contains: query?.productName ?? ''
-          },
-        },
         include: {
           developers: true, // Incluimos los datos de desarrolladores
         },
       });
 
-      res.status(httpStatus.OK).json(formatResponse(projects, "Projects retrieved successfully"));
+      res
+        .status(httpStatus.OK)
+        .json(formatResponse(projects, "Projects retrieved successfully"));
     } catch (error) {
       next(error);
     } finally {
       await prisma.$disconnect();
     }
-  }
+  };
 
   const getProjectById = async (
     req: Request,
@@ -81,13 +77,15 @@ export const projectController = () => {
         },
       });
 
-      res.status(httpStatus.OK).json(formatResponse(project, "Project retrieved successfully"))
+      res
+        .status(httpStatus.OK)
+        .json(formatResponse(project, "Project retrieved successfully"));
     } catch (error) {
       next(error);
     } finally {
       await prisma.$disconnect();
     }
-  }
+  };
 
   const deleteProject = async (
     req: Request,
@@ -102,13 +100,15 @@ export const projectController = () => {
         },
       });
 
-      res.status(httpStatus.OK).json(formatResponse(project, "Project deleted successfully"));
+      res
+        .status(httpStatus.OK)
+        .json(formatResponse(project, "Project deleted successfully"));
     } catch (error) {
       next(error);
     } finally {
       await prisma.$disconnect();
     }
-  }
+  };
 
   const updateProject = async (
     req: Request,
@@ -134,18 +134,20 @@ export const projectController = () => {
         },
       });
 
-      res.status(httpStatus.OK).json(formatResponse(project, "Project updated successfully"));
+      res
+        .status(httpStatus.OK)
+        .json(formatResponse(project, "Project updated successfully"));
     } catch (error) {
       next(error);
     } finally {
       await prisma.$disconnect();
-    };
-  }
+    }
+  };
   return {
     createProject,
     getAllProject,
     getProjectById,
     deleteProject,
-    updateProject
+    updateProject,
   };
 };
