@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,16 +7,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.projectController = void 0;
-const client_1 = require("@prisma/client");
-const httpStatus_1 = __importDefault(require("../helpers/httpStatus"));
-const formatResponse_1 = require("../utils/formatResponse");
-const prisma = new client_1.PrismaClient();
-const projectController = () => {
+import { PrismaClient } from "@prisma/client";
+import httpStatus from "../helpers/httpStatus";
+import { formatResponse } from "../utils/formatResponse";
+const prisma = new PrismaClient();
+export const projectController = () => {
     const createProject = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         //Destructuramos los datos que vienen en el body
         const { name, description, status, developers } = req.body;
@@ -35,7 +29,9 @@ const projectController = () => {
                     },
                 },
             });
-            res.status(httpStatus_1.default.CREATED).json((0, formatResponse_1.formatResponse)(project, "Project created successfully"));
+            res
+                .status(httpStatus.CREATED)
+                .json(formatResponse(project, "Project created successfully"));
         }
         catch (error) {
             next(error);
@@ -45,22 +41,15 @@ const projectController = () => {
         }
     });
     const getAllProject = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-        var _a;
-        // Destructuramos query para obtener el nombre del proyecto
-        const { query } = req;
         try {
-            // Buscamos el proyecto por nombre o devolvemos todos sus valores
             const projects = yield prisma.project.findMany({
-                where: {
-                    name: {
-                        contains: (_a = query === null || query === void 0 ? void 0 : query.productName) !== null && _a !== void 0 ? _a : ''
-                    },
-                },
                 include: {
                     developers: true, // Incluimos los datos de desarrolladores
                 },
             });
-            res.status(httpStatus_1.default.OK).json((0, formatResponse_1.formatResponse)(projects, "Projects retrieved successfully"));
+            res
+                .status(httpStatus.OK)
+                .json(formatResponse(projects, "Projects retrieved successfully"));
         }
         catch (error) {
             next(error);
@@ -81,7 +70,9 @@ const projectController = () => {
                     developers: true, // Incluimos los datos de desarrolladores
                 },
             });
-            res.status(httpStatus_1.default.OK).json((0, formatResponse_1.formatResponse)(project, "Project retrieved successfully"));
+            res
+                .status(httpStatus.OK)
+                .json(formatResponse(project, "Project retrieved successfully"));
         }
         catch (error) {
             next(error);
@@ -98,7 +89,9 @@ const projectController = () => {
                     id: Number(id),
                 },
             });
-            res.status(httpStatus_1.default.OK).json((0, formatResponse_1.formatResponse)(project, "Project deleted successfully"));
+            res
+                .status(httpStatus.OK)
+                .json(formatResponse(project, "Project deleted successfully"));
         }
         catch (error) {
             next(error);
@@ -126,7 +119,9 @@ const projectController = () => {
                     },
                 },
             });
-            res.status(httpStatus_1.default.OK).json((0, formatResponse_1.formatResponse)(project, "Project updated successfully"));
+            res
+                .status(httpStatus.OK)
+                .json(formatResponse(project, "Project updated successfully"));
         }
         catch (error) {
             next(error);
@@ -134,14 +129,12 @@ const projectController = () => {
         finally {
             yield prisma.$disconnect();
         }
-        ;
     });
     return {
         createProject,
         getAllProject,
         getProjectById,
         deleteProject,
-        updateProject
+        updateProject,
     };
 };
-exports.projectController = projectController;

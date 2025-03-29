@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const httpStatus = {
     OK: 200,
     CREATED: 201,
@@ -9,4 +7,4 @@ const httpStatus = {
     NOT_FOUND: 404,
     INTERNAL_SERVER_ERROR: 500
 };
-exports.default = httpStatus;
+export default httpStatus;
