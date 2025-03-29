@@ -23,7 +23,7 @@
   "author": "Sebastian Galeano",
   "license": "ISC",
   "devDependencies": {
-    "@types/cors": "^2.8.17",
+    "@types/cors": "2.8.5",
     "@types/express": "^5.0.1",
     "@types/node": "^22.13.14",
     "@types/swagger-jsdoc": "^6.0.4",
