@@ -8,3 +8,5 @@ export interface ErrorHandler {
   defaultError: ErrorHandlerFunction;
   [key: string]: ErrorHandlerFunction; //Acceso dinamico - firma de indice
 }
+/* Firma de índice: Permite agregar dinámicamente más propiedades de tipo ErrorHandlerFunction 
+con cualquier clave de tipo string. */
