@@ -1,5 +1,5 @@
 import type { HttpStatus } from '../types/helpers/index'
-
+// Codigos HTTP para respuestas al usuario
 const httpStatus: HttpStatus = {
     OK: 200,
     CREATED: 201,

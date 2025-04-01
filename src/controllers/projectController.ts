@@ -14,13 +14,14 @@ export const projectController = () => {
     //Destructuramos los datos que vienen en el body
     const { name, description, status, developers } = req.body;
     try {
-      // Creamos el proyecto
+      // Creamos el proyecto con el metodo create de prisma
       const project = await prisma.project.create({
         data: {
           name,
           description,
           status,
           developers: developers && {
+            // Iteramos sobre los id de los devs para encontrarlos y asignarles el proyecto
             create: developers.map((dev: { devId: number }) => ({
               devId: dev.devId,
             })),
@@ -28,9 +29,7 @@ export const projectController = () => {
         },
       });
 
-      res
-        .status(httpStatus.CREATED)
-        .json(formatResponse(project, "Project created successfully"));
+      res.status(httpStatus.CREATED).json(formatResponse(project, "Project created successfully"));
     } catch (error) {
       next(error);
     } finally {
@@ -92,11 +91,12 @@ export const projectController = () => {
     res: Response,
     next: NextFunction
   ) => {
+    // Desestructuramos el id del proyecto
     const { id } = req.params;
     try {
       const project = await prisma.project.delete({
         where: {
-          id: Number(id),
+          id: Number(id), // Utilizamos el id para encontrar el proyecto dentro de la db y la eliminamos
         },
       });
 
@@ -115,9 +115,11 @@ export const projectController = () => {
     res: Response,
     next: NextFunction
   ) => {
+    // Desestructuramos los datos para actualizarlos
     const { id } = req.params;
     const { name, description, status, developers } = req.body;
     try {
+      // Con el metodo update actualizamos los datos del proyecto en cuestión
       const project = await prisma.project.update({
         where: {
           id: Number(id),
