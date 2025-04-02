@@ -27,9 +27,18 @@ export const projectController = () => {
             })),
           },
         },
+        include: {
+          developers: {
+            include: {
+              developer: true, // extrae toda la info del Developer
+            },
+          },
+        },
       });
 
-      res.status(httpStatus.CREATED).json(formatResponse(project, "Project created successfully"));
+      res
+        .status(httpStatus.CREATED)
+        .json(formatResponse(project, "Project created successfully"));
     } catch (error) {
       next(error);
     } finally {
@@ -45,7 +54,11 @@ export const projectController = () => {
     try {
       const projects = await prisma.project.findMany({
         include: {
-          developers: true, // Incluimos los datos de desarrolladores
+          developers: {
+            include: {
+              developer: true, // extrae toda la info del Developer
+            },
+          },
         },
       });
 
@@ -72,7 +85,11 @@ export const projectController = () => {
           id: Number(id),
         },
         include: {
-          developers: true, // Incluimos los datos de desarrolladores
+          developers: {
+            include: {
+              developer: true,
+            },
+          },
         },
       });
 
@@ -93,11 +110,18 @@ export const projectController = () => {
   ) => {
     // Desestructuramos el id del proyecto
     const { id } = req.params;
+    // id a entero para utilizar en where
+    const projectId = Number(id);
+
     try {
+      // Primero eliminamos las relaciones en ProjectDeveloper
+      await prisma.projectDeveloper.deleteMany({
+        where: { projectId },
+      });
+
+      // Ahora eliminamos el proyecto
       const project = await prisma.project.delete({
-        where: {
-          id: Number(id), // Utilizamos el id para encontrar el proyecto dentro de la db y la eliminamos
-        },
+        where: { id: projectId },
       });
 
       res
@@ -132,6 +156,13 @@ export const projectController = () => {
             create: developers.map((dev: { devId: number }) => ({
               devId: dev.devId,
             })),
+          },
+        },
+        include: {
+          developers: {
+            include: {
+              developer: true, // extrae toda la info del Developer
+            },
           },
         },
       });
