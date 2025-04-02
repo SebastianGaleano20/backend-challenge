@@ -30,6 +30,18 @@ export const devController = () => {
       await prisma.$disconnect();
     }
   };
+  const getAllDev = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const developers = await prisma.developer.findMany();
+      res
+        .status(httpStatus.OK)
+        .json(formatResponse(developers, "Developers retrieved successfully"));
+    } catch (error) {
+      next(error);
+    } finally {
+      await prisma.$disconnect();
+    }
+  };
 
   return { createDev };
 };
