@@ -1,27 +1,167 @@
 openapi: 3.0.4
+
 info:
-  title: Project Management API
-  description: REST API for a project management application
+  title: project-management-api
+  description: API for managing projects and developers
   version: 1.0.0
+
 servers:
   - url: http://localhost:2018/api
-    description: API server
+    description: Local development server
 
 paths:
   /projects:
     get:
-      summary: Returns a list of projects
+      summary: Get all projects
+      parameters:
+        - name: search
+          in: query
+          description: Search projects by name
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number for pagination
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: Number of items per page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
       responses:
-        "200":
-          description: A JSON array of projects
+        200:
+          description: Successful response
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    name:
-                      type: string
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Project"
+                  message:
+                    type: string
+    post:
+      summary: Create a new project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectInput"
+      responses:
+        201:
+          description: Project created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+
+  /projects/{id}:
+    get:
+      summary: Get project by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+    delete:
+      summary: Delete a project
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Project deleted successfully
+    patch:
+      summary: Update a project
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectInput"
+      responses:
+        200:
+          description: Project updated successfully
+
+components:
+  schemas:
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum: [IN_PROGRESS, COMPLETED, CANCELED]
+        developers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Developer"
+
+    ProjectInput:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 3
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+        status:
+          type: string
+          enum: [IN_PROGRESS, COMPLETED, CANCELED]
+        developers:
+          type: array
+          items:
+            $ref: "#/components/schemas/DeveloperInput"
+
+    Developer:
+      type: object
+      properties:
+        devId:
+          type: integer
+        role:
+          type: string
+          enum: [MANAGER, DEVELOPER]
+
+    DeveloperInput:
+      type: object
+      properties:
+        devId:
+          type: integer
+        role:
+          type: string
+          enum: [MANAGER, DEVELOPER]
+      required:
+        - devId
