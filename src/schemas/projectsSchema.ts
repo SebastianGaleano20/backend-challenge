@@ -19,11 +19,3 @@ export const projectQuerySchema = Joi.object({
   limit: Joi.number().min(1).max(100).optional().default(10),
   search: Joi.string().optional(),
 });
-
-export const validateProject = (data: any) => {
-  return projectSchema.validate(data);
-};
-
-export const validateProjectQuery = (query: any) => {
-  return projectQuerySchema.validate(query);
-};
