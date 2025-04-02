@@ -22,7 +22,7 @@ export const projectRouter = () => {
     .route("/projects/:id")
     .get(getProjectById)
     .delete(deleteProject)
-    .patch(updateProject);
+    .patch(schemaValidator(projectSchema), updateProject);
 
   return projectRouter;
 };

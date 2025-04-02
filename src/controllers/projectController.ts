@@ -143,7 +143,6 @@ export const projectController = () => {
     const { id } = req.params;
     const { name, description, status, developers } = req.body;
     try {
-      // Con el metodo update actualizamos los datos del proyecto en cuestión
       const project = await prisma.project.update({
         where: {
           id: Number(id),
@@ -153,16 +152,22 @@ export const projectController = () => {
           description,
           status,
           developers: developers && {
-            create: developers.map((dev: { devId: number }) => ({
-              devId: dev.devId,
+            // Si hay nuevos desarrolladores, los agregamos de forma segura
+            upsert: developers.map((dev: { devId: number; role: string }) => ({
+              where: {
+                devId_projectId: {
+                  devId: dev.devId,
+                  projectId: Number(id),
+                },
+              },
+              update: {
+                role: dev.role, // Actualiza el rol del desarrollador si es necesario
+              },
+              create: {
+                devId: dev.devId,
+                role: dev.role,
+              },
             })),
-          },
-        },
-        include: {
-          developers: {
-            include: {
-              developer: true, // extrae toda la info del Developer
-            },
           },
         },
       });
