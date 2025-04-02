@@ -7,8 +7,8 @@ const prisma = new PrismaClient();
 
 export const devController = () => {
   const createDev = async (
-    res: Response,
     req: Request,
+    res: Response,
     next: NextFunction
   ): Promise<void> => {
     const { name, email, image, role } = req.body;
@@ -31,5 +31,5 @@ export const devController = () => {
     }
   };
 
-  return createDev;
+  return { createDev };
 };
