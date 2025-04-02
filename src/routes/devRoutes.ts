@@ -5,7 +5,10 @@ import { devSchema } from "@/schemas/devSchema";
 
 export const devRouter = () => {
   const devRouter = Router();
-  const { createDev } = devController();
-  devRouter.route("/dev").post(schemaValidator(devSchema), createDev);
+  const { createDev, getAllDev } = devController();
+  devRouter
+    .route("/dev")
+    .get(getAllDev)
+    .post(schemaValidator(devSchema), createDev);
   return devRouter;
 };

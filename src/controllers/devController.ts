@@ -43,5 +43,5 @@ export const devController = () => {
     }
   };
 
-  return { createDev };
+  return { createDev, getAllDev };
 };
