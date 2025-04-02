@@ -109,6 +109,60 @@ paths:
         200:
           description: Project updated successfully
 
+  /dev:
+    get:
+      summary: Get all developers
+      parameters:
+        - name: search
+          in: query
+          description: Search developers by name
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number for pagination
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: Number of items per page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Developer"
+                  message:
+                    type: string
+    post:
+      summary: Create a new Developer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeveloperInput"
+      responses:
+        201:
+          description: Project created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Developer"
+
 components:
   schemas:
     Project:
