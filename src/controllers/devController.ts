@@ -1,0 +1,35 @@
+import { PrismaClient } from "@prisma/client";
+import httpStatus from "@/helpers/httpStatus";
+import { Response, Request, NextFunction } from "express";
+import { formatResponse } from "@/utils/formatResponse";
+
+const prisma = new PrismaClient();
+
+export const devController = () => {
+  const createDev = async (
+    res: Response,
+    req: Request,
+    next: NextFunction
+  ): Promise<void> => {
+    const { name, email, image, role } = req.body;
+    try {
+      const developer = await prisma.developer.create({
+        data: {
+          name,
+          email,
+          image,
+          role,
+        },
+      });
+      res
+        .status(httpStatus.CREATED)
+        .json(formatResponse(developer, "Developer created successfully"));
+    } catch (error) {
+      next(error);
+    } finally {
+      await prisma.$disconnect();
+    }
+  };
+
+  return createDev;
+};
