@@ -4,6 +4,7 @@ import swaggerUi from "swagger-ui-express";
 import cors from "cors";
 import YAML from "yamljs";
 import { projectRouter } from "@/routes/projectRoutes";
+import { devRouter } from "./routes/devRoutes";
 
 dotenv.config();
 const SERVER_PORT = process.env.SERVER_PORT || 2010;
@@ -19,7 +20,7 @@ app.use(
 );
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
-app.use("/api", projectRouter());
+app.use("/api", projectRouter(), devRouter());
 app.listen(SERVER_PORT, () => {
   console.log(`Server on listening ${SERVER_PORT}`);
 });
