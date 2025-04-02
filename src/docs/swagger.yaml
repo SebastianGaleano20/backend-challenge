@@ -144,7 +144,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Developer"
+                      $ref: "#/components/schemas/DeveloperInputCreate"
                   message:
                     type: string
     post:
@@ -154,7 +154,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/DeveloperInput"
+              $ref: "#/components/schemas/DeveloperInputCreate"
       responses:
         201:
           description: Project created successfully
@@ -214,6 +214,20 @@ components:
       properties:
         devId:
           type: integer
+        role:
+          type: string
+          enum: [MANAGER, DEVELOPER]
+      required:
+        - devId
+    DeveloperInputCreate:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        image:
+          type: string
         role:
           type: string
           enum: [MANAGER, DEVELOPER]
