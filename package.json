@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "tsx watch app.ts",
     "build": "tsc",
-    "start": "node -r tsconfig-paths/register dist/app.js"
+    "start": "node dist/app.js"
   },
   "keywords": [
     "Typescript",
