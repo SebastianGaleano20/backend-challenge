@@ -3,8 +3,8 @@ import dotenv from "dotenv";
 import swaggerUi from "swagger-ui-express";
 import cors from "cors";
 import YAML from "yamljs";
-import { projectRouter } from "./routes/projectRoutes";
-import { devRouter } from "./routes/devRoutes";
+import { projectRouter } from "./routes/projectRoutes.js";
+import { devRouter } from "./routes/devRoutes.js";
 
 dotenv.config();
 const SERVER_PORT = process.env.SERVER_PORT || 2010;

@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import httpStatus from "../helpers/httpStatus";
+import httpStatus from "../helpers/httpStatus.js";
 import { Response, Request, NextFunction } from "express";
-import { formatResponse } from "../utils/formatResponse";
+import { formatResponse } from "../utils/formatResponse.js";
 
 const prisma = new PrismaClient();
 

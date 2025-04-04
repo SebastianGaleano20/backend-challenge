@@ -1,4 +1,4 @@
-import { FormatResponse } from "../types/utils/index";
+import { FormatResponse } from "../types/utils/index.js";
 
 export const formatResponse = <T>(
   data: T,

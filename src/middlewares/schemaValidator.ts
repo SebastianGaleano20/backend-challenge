@@ -1,5 +1,5 @@
 import Joi from "joi";
-import HTTP_STATUS from "../helpers/httpStatus";
+import HTTP_STATUS from "../helpers/httpStatus.js";
 import { Response, Request, NextFunction } from "express";
 
 export const schemaValidator = (schema: Joi.ObjectSchema) => {

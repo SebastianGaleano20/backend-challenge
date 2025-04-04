@@ -1,4 +1,4 @@
-import { ERROR_HANDLERS } from "../utils/errorHandlerObject";
+import { ERROR_HANDLERS } from "../utils/errorHandlerObject.js";
 import { Response, Request, NextFunction } from "express";
 
 const errorHandler = (

@@ -1,5 +1,5 @@
 import { ErrorHandler } from "../types/middlewares";
-import HTTP_STATUS from "../helpers/httpStatus";
+import HTTP_STATUS from "../helpers/httpStatus.js";
 import { Response } from "express";
 
 export const ERROR_HANDLERS: ErrorHandler = {

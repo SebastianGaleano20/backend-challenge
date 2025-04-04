@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { devController } from "../controllers/devController";
-import { schemaValidator } from "../middlewares/schemaValidator";
-import { devSchema } from "../schemas/devSchema";
+import { devController } from "../controllers/devController.js";
+import { schemaValidator } from "../middlewares/schemaValidator.js";
+import { devSchema } from "../schemas/devSchema.js";
 
 export const devRouter = () => {
   const devRouter = Router();
