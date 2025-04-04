@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import swaggerUi from "swagger-ui-express";
 import cors from "cors";
 import YAML from "yamljs";
-import { projectRouter } from "@/routes/projectRoutes";
+import { projectRouter } from "./routes/projectRoutes";
 import { devRouter } from "./routes/devRoutes";
 
 dotenv.config();
