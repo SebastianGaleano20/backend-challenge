@@ -3,7 +3,7 @@
     "target": "ES6",
     "module": "ES2022",
     "outDir": "./dist",
-    "rootDir": "./",
+    "rootDir": "./src",
     "strict": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -16,7 +16,7 @@
   },
   "include": [
     "src/**/*.ts"
-, "app.ts"  ],
+, "src/app.ts"  ],
   "exclude": [
     "node_modules",
     "dist"
