@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: "*",
-    methods: "GET,POST,PATH,DELETE",
+    methods: "GET,POST,PATCH,DELETE",
   })
 );
 
