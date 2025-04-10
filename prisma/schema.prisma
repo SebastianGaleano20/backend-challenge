@@ -32,6 +32,7 @@ model ProjectDeveloper {
   id        Int       @id @default(autoincrement())
   devId     Int
   projectId Int
+  role      DevRole
   developer Developer @relation(fields: [devId], references: [id])
   project   Project   @relation(fields: [projectId], references: [id])
 

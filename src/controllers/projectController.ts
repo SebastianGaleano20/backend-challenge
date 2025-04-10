@@ -134,44 +134,57 @@ export const projectController = () => {
     }
   };
 
-  const updateProject = async (req: Request, res: Response, next: NextFunction) => {
-  const { id } = req.params;
-  const { name, description, status, developers } = req.body;
-  try {
-    const project = await prisma.project.update({
-      where: {
-        id: Number(id),
-      },
-      data: {
-        name,
-        description,
-        status,
-        developers: developers && {
-          connectOrCreate: developers.map((dev: { devId: number; role: string }) => ({
-            where: {
-              devId_projectId: {
-                devId: dev.devId,
-                projectId: Number(id),
-              },
-            },
-            create: {
-              devId: dev.devId,
-              role: dev.role,
-            },
-          })),
+  const updateProject = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { id } = req.params;
+    const { name, description, status, developers } = req.body;
+    try {
+      const project = await prisma.project.update({
+        where: {
+          id: Number(id),
         },
-      },
-    });
+        data: {
+          name,
+          description,
+          status,
+        },
+        include: {
+          developers: {
+            include: {
+              developer: true,
+            },
+          },
+        },
+      });
 
-    res
-      .status(httpStatus.OK)
-      .json(formatResponse(project, "Project updated successfully"));
-  } catch (error) {
-    next(error);
-  } finally {
-    await prisma.$disconnect();
-  }
-};
+      await prisma.projectDeveloper.deleteMany({
+        where: {
+          projectId: Number(id),
+        },
+      });
+
+      if (developers && Array.isArray(developers)) {
+        await prisma.projectDeveloper.createMany({
+          data: developers.map((dev: { devId: number; role: string }) => ({
+            devId: dev.devId,
+            projectId: Number(id),
+            role: dev.role,
+          })),
+        });
+      }
+
+      res
+        .status(httpStatus.OK)
+        .json(formatResponse(project, "Project updated successfully"));
+    } catch (error) {
+      next(error);
+    } finally {
+      await prisma.$disconnect();
+    }
+  };
 
   return {
     createProject,
