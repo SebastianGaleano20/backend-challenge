@@ -141,37 +141,58 @@ export const projectController = () => {
   ) => {
     const { id } = req.params;
     const { name, description, status, developers } = req.body;
+    const projectId = Number(id);
+
     try {
-      const project = await prisma.project.update({
+      console.log(`Trying to update/create project with ID: ${projectId}`);
+
+      // Actualizar o crear el proyecto si no existe
+      const updatedProject = await prisma.project.upsert({
         where: {
-          id: Number(id),
+          id: projectId,
         },
-        data: {
+        update: {
           name,
           description,
           status,
-          developers: developers && {
-            connectOrCreate: developers.map(
-              (dev: { devId: number; role: string }) => ({
-                where: {
-                  devId_projectId: {
-                    devId: dev.devId,
-                    projectId: Number(id), // clave compuesta
-                  },
-                },
-                create: {
-                  devId: dev.devId,
-                  projectId: Number(id), // ⚠️ ¡ESTO ES LO QUE FALTABA!
-                  role: dev.role,
-                },
-              })
-            ),
+        },
+        create: {
+          id: projectId,
+          name: name || "Default name",
+          description: description || null,
+          status: status || "IN_PROGRESS",
+        },
+      });
+
+      // Manejar desarrolladores si existen
+      if (developers && Array.isArray(developers)) {
+        // Eliminar relaciones existentes
+        await prisma.projectDeveloper.deleteMany({
+          where: {
+            projectId,
           },
+        });
+
+        // Crear nuevas relaciones
+        for (const dev of developers) {
+          await prisma.projectDeveloper.create({
+            data: {
+              projectId,
+              devId: dev.devId,
+            },
+          });
+        }
+      }
+
+      // Obtener el proyecto actualizado con sus relaciones
+      const finalProject = await prisma.project.findUnique({
+        where: {
+          id: projectId,
         },
         include: {
           developers: {
             include: {
-              developer: true, // esto te trae la info del developer
+              developer: true,
             },
           },
         },
@@ -179,8 +200,9 @@ export const projectController = () => {
 
       res
         .status(httpStatus.OK)
-        .json(formatResponse(project, "Project updated successfully"));
+        .json(formatResponse(finalProject, "Project updated successfully"));
     } catch (error) {
+      console.error("Error updating/creating project:", error);
       next(error);
     } finally {
       await prisma.$disconnect();

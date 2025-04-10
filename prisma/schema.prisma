@@ -24,8 +24,8 @@ model Developer {
   image     String?
   createdAt DateTime           @default(now())
   updateAt  DateTime           @default(now())
-  projects  ProjectDeveloper[]
   role      DevRole            @default(DEVELOPER)
+  projects  ProjectDeveloper[]
 }
 
 model ProjectDeveloper {
