@@ -150,31 +150,32 @@ export const projectController = () => {
           name,
           description,
           status,
+          developers: developers && {
+            connectOrCreate: developers.map(
+              (dev: { devId: number; role: string }) => ({
+                where: {
+                  devId_projectId: {
+                    devId: dev.devId,
+                    projectId: Number(id), // clave compuesta
+                  },
+                },
+                create: {
+                  devId: dev.devId,
+                  projectId: Number(id), // ⚠️ ¡ESTO ES LO QUE FALTABA!
+                  role: dev.role,
+                },
+              })
+            ),
+          },
         },
         include: {
           developers: {
             include: {
-              developer: true,
+              developer: true, // esto te trae la info del developer
             },
           },
         },
       });
-
-      await prisma.projectDeveloper.deleteMany({
-        where: {
-          projectId: Number(id),
-        },
-      });
-
-      if (developers && Array.isArray(developers)) {
-        await prisma.projectDeveloper.createMany({
-          data: developers.map((dev: { devId: number; role: string }) => ({
-            devId: dev.devId,
-            projectId: Number(id),
-            role: dev.role,
-          })),
-        });
-      }
 
       res
         .status(httpStatus.OK)
