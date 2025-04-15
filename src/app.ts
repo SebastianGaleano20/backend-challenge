@@ -19,7 +19,7 @@ app.use(
   })
 );
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 app.use("/api", projectRouter(), devRouter());
 app.listen(SERVER_PORT, () => {
   console.log(`Server on listening ${SERVER_PORT}`);

@@ -198,7 +198,7 @@ components:
         developers:
           type: array
           items:
-            $ref: "#/components/schemas/DeveloperInput"
+            $ref: "#/components/schemas/DeveloperInputUpdate"
 
     Developer:
       type: object
@@ -233,3 +233,7 @@ components:
           enum: [MANAGER, DEVELOPER]
       required:
         - devId
+      DeveloperInputUpdate:
+      type: object
+      properties:
+        devId: number
