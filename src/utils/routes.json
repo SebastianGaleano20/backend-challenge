@@ -1,0 +1,16 @@
+{
+    "routes": [
+        {
+            "API DOC route": "/api-docs",
+            "description": "Swagger UI Documentation"
+        },
+        {
+            "project route": "/api/projects",
+            "description": "Route to get all projects"
+        },
+        {
+            "dev route": "/api/dev",
+            "description": "Route to get all devs"
+        }
+    ]
+}
